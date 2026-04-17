@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedRetain | Patient Retention Intelligence for Hospitals</title>
+    <meta name="description"
+        content="MedRetain analyses patient history, generates risk scores, and triggers the right outreach — so no patient slips through the cracks.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav id="main-nav">
+        <div class="container nav-content">
+            <div class="logo">MedRetain</div>
+            <div class="nav-links">
+                <a href="#how-it-works">How It Works</a>
+                <a href="#features">Features</a>
+                <a href="#stats">Impact</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-pill btn-dark">Request a Demo</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Section 1: Hero -->
+        <section id="hero" class="white-bg reveal">
+            <div class="container hero-grid">
+                <div class="hero-text">
+                    <h1 class="serif">Know which patients need you, <br>before they leave.</h1>
+                    <p class="subheadline">MedRetain analyses patient history, generates risk scores, and triggers the
+                        right outreach — so no patient slips through the cracks.</p>
+                    <div class="cta-group">
+                        <button class="btn btn-pill btn-dark">Request a Demo</button>
+                        <button class="btn btn-pill btn-outline">See how it works</button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div id="data-network">
+                        <!-- Animated SVG will be injected here via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Trust Strip -->
+        <section id="trust-strip" class="white-bg reveal">
+            <div class="container thin-strip">
+                <span class="label-small">Designed for leading healthcare providers</span>
+                <div class="trust-logos">
+                    <span>Hospitals</span>
+                    <span class="dot">·</span>
+                    <span>Clinics</span>
+                    <span class="dot">·</span>
+                    <span>Diagnostic Centres</span>
+                    <span class="dot">·</span>
+                    <span>Specialty Practices</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: How It Works -->
+        <section id="how-it-works" class="white-bg reveal">
+            <div class="container vertical-stack">
+                <span class="label-teal-caps">HOW IT WORKS</span>
+                <h2 class="serif section-heading">From patient data to the right action, automatically.</h2>
+
+                <div class="steps-list">
+                    <div class="step reveal-up">
+                        <div class="step-number serif">01</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Reads patient history</h3>
+                            <p>We securely connect to your existing systems to pull historical patient data and
+                                interactions.</p>
+                        </div>
+                    </div>
+                    <div class="step reveal-up">
+                        <div class="step-number serif">02</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Generates a risk score</h3>
+                            <p>Our intelligence engine assigns every patient a real-time risk score based on their
+                                likelihood to disengage.</p>
+                        </div>
+                    </div>
+                    <div class="step reveal-up">
+                        <div class="step-number serif">03</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Triggers the right outreach</h3>
+                            <p>Once a threshold is met, MedRetain automates the next best action to keep the patient
+                                engaged.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Feature Callout -->
+        <section id="features" class="white-bg">
+            <!-- Row A -->
+            <div class="feature-row container reveal-up">
+                <div class="feature-graphic">
+                    <!-- Abstract SVG Illustration 1: Risk Scoring -->
+                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="400" height="300" rx="20" fill="url(#grad1)" />
+                        <circle cx="200" cy="150" r="90" stroke="#1D9E75" stroke-width="1" stroke-dasharray="10 10"
+                            opacity="0.3" />
+                        <circle cx="200" cy="150" r="60" stroke="#1D9E75" stroke-width="1" opacity="0.5" />
+                        <circle cx="200" cy="150" r="30" fill="#1D9E75" fill-opacity="0.1" />
+
+                        <!-- Pulse Dots -->
+                        <circle cx="200" cy="150" r="4" fill="#1D9E75">
+                            <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="110" cy="150" r="3" fill="#111" opacity="0.4" />
+                        <circle cx="290" cy="150" r="3" fill="#111" opacity="0.4" />
+                        <circle cx="200" cy="60" r="3" fill="#111" opacity="0.4" />
+                        <circle cx="200" cy="240" r="3" fill="#111" opacity="0.4" />
+
+                        <path d="M110 150L170 150M230 150L290 150M200 60L200 120M200 180L200 240" stroke="#1D9E75"
+                            stroke-width="1" stroke-dasharray="4 4" />
+                    </svg>
+                </div>
+                <div class="feature-text">
+                    <h2 class="serif">Identify at-risk patients before they disengage</h2>
+                    <p>MedRetain's risk scoring engine analyses every patient's history to surface who needs attention —
+                        before they miss an appointment or stop responding.</p>
+                </div>
+            </div>
+
+            <!-- Row B -->
+            <div class="feature-row container reverse reveal-up">
+                <div class="feature-text">
+                    <h2 class="serif">Precision outreach, at the right moment</h2>
+                    <p>When a patient's risk score crosses a threshold, MedRetain automatically triggers the appropriate
+                        action — a reminder, a care team alert, or a personalised follow-up — with no manual effort.</p>
+                </div>
+                <div class="feature-graphic">
+                    <!-- Abstract SVG Illustration 2: Automation/Trigger -->
+                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="300" rx="20" fill="#f8f9fa" />
+                        <path d="M80 150C80 150 140 150 180 150" stroke="#ddd" stroke-width="2"
+                            stroke-linecap="round" />
+                        <path d="M220 150C260 150 320 150 320 150" stroke="#ddd" stroke-width="2" stroke-linecap="round"
+                            stroke-dasharray="4 4" />
+
+                        <!-- The "Trigger" Box -->
+                        <rect x="180" y="130" width="40" height="40" rx="12" fill="#1D9E75"
+                            transform="rotate(45 200 150)" />
+                        <path d="M194 150L206 150M200 144V156" stroke="white" stroke-width="2.5"
+                            stroke-linecap="round" />
+
+                        <!-- Radiating waves -->
+                        <circle cx="200" cy="150" r="40" stroke="#1D9E75" stroke-width="1" opacity="0.2">
+                            <animate attributeName="r" values="30;60" dur="2s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.3;0" dur="2s" repeatCount="indefinite" />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Row C -->
+            <div class="feature-row container reveal-up">
+                <div class="feature-graphic">
+                    <!-- Abstract SVG Illustration 3: Dashboard/Trends -->
+                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="300" rx="20" fill="#f8f9fa" />
+                        <path d="M70 230H330" stroke="#ddd" stroke-width="2" stroke-linecap="round" />
+                        <path d="M70 230V70" stroke="#ddd" stroke-width="2" stroke-linecap="round" />
+
+                        <!-- Data bars -->
+                        <rect x="90" y="180" width="30" height="50" rx="4" fill="#eee" />
+                        <rect x="140" y="140" width="30" height="90" rx="4" fill="#eee" />
+                        <rect x="190" y="100" width="30" height="130" rx="4" fill="#1D9E75" fill-opacity="0.8" />
+                        <rect x="240" y="160" width="30" height="70" rx="4" fill="#eee" />
+                        <rect x="290" y="120" width="30" height="110" rx="4" fill="#eee" />
+
+                        <!-- Trend line -->
+                        <path d="M90 190C140 150 190 90 240 130C290 170 330 110 330 110" stroke="#1D9E75"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="feature-text">
+                    <h2 class="serif">Track patients. Close care gaps.</h2>
+                    <p>Monitor your entire patient population from a single dashboard. See who's engaged, who's at risk,
+                        and where care gaps are forming — in real time.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Section 5: Dark Stats Bar -->
+        <section id="stats" class="dark-bg reveal">
+            <div class="container centered">
+                <span class="label-teal-caps">BUILT FOR IMPACT</span>
+                <h2 class="serif white-text">Retention is a revenue problem. <br>We make it a solved one.</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card reveal-up-staggered">
+                        <h3 class="serif highlight">Predictive</h3>
+                        <p>Risk scoring based on real patient behaviour, not guesswork</p>
+                    </div>
+                    <div class="stat-card reveal-up-staggered">
+                        <h3 class="serif highlight">Secured</h3>
+                        <p>Enterprise-grade data security, always</p>
+                    </div>
+                    <div class="stat-card reveal-up-staggered">
+                        <h3 class="serif highlight">Hospitals</h3>
+                        <p>The only audience we build for</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: MedRetain Means -->
+        <section id="means" class="white-bg reveal">
+            <div class="container centered">
+                <h2 class="serif section-heading">MedRetain Means:</h2>
+                <div class="means-grid">
+                    <div class="means-item reveal-up">Fewer patients lost</div>
+                    <div class="means-item reveal-up">Smarter care teams</div>
+                    <div class="means-item reveal-up">Secured patient data</div>
+                    <div class="means-item reveal-up">Revenue that reflects the care you give</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Mission Statement -->
+        <section id="mission" class="dark-bg reveal">
+            <div class="container centered">
+                <blockquote class="serif mission-quote">
+                    "Patients don't just need care when they're in the room. <br>MedRetain makes sure they come back."
+                </blockquote>
+                <button class="btn btn-pill btn-teal">Let's Talk</button>
+            </div>
+        </section>
+
+        <!-- Section 8: Contact -->
+        <section id="contact" class="white-bg reveal">
+            <div class="container centered contact-container">
+                <h2 class="serif section-heading">Get in touch</h2>
+                <p class="contact-sub">We'd love to understand your hospital's needs and walk you through what MedRetain
+                    can do.</p>
+
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="label-teal-caps">EMAIL US</span>
+                            <p>medretaintechnology@gmail.com</p>
+                        </div>
+                        <div class="contact-item">
+                            <span class="label-teal-caps">CALL US</span>
+                            <p>+91 7400291925</p>
+                        </div>
+                    </div>
+                    <form class="contact-form" onsubmit="return false;">
+                        <input type="text" placeholder="Full Name" class="input-field">
+                        <input type="email" placeholder="Work Email" class="input-field">
+                        <input type="text" placeholder="Hospital/Organization" class="input-field">
+                        <textarea placeholder="How can we help?" class="input-field textarea"></textarea>
+                        <button class="btn btn-pill btn-dark lg-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-left">
+                <div class="logo">MedRetain</div>
+            </div>
+            <div class="footer-center">
+                <p>Helping hospitals retain patients through intelligent outreach</p>
+            </div>
+            <div class="footer-right">
+                <p>&copy; 2025 MedRetain · medretaintechnology@gmail.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
