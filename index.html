@@ -1,302 +1,605 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedRetain | Patient Retention Intelligence for Hospitals</title>
-    <meta name="description"
-        content="MedRetain analyses patient history, generates risk scores, and triggers the right outreach — so no patient slips through the cracks.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedRetain — Patient Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&display=swap"
-        rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0f0d;
+    --paper: #f5f2eb;
+    --paper-alt: #ede9e0;
+    --sage: #3d5a47;
+    --sage-light: #6b8f76;
+    --sage-dark: #1e3028;
+    --gold: #b8965a;
+    --gold-light: #d4b07a;
+    --cream: #faf8f3;
+    --muted: #7a7568;
+    --border: rgba(10,15,13,0.12);
+    --border-strong: rgba(10,15,13,0.25);
+  }
 
-    <link rel="stylesheet" href="style.css">
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--sage); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid var(--sage); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    opacity: 0.5;
+  }
+  .cursor.hover { width: 6px; height: 6px; }
+  .cursor-ring.hover { width: 56px; height: 56px; opacity: 0.2; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 48px;
+    transition: background 0.4s ease, padding 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(245,242,235,0.92);
+    backdrop-filter: blur(12px);
+    padding: 16px 48px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500; letter-spacing: 0.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .nav-logo span { color: var(--sage); }
+  .nav-links { display: flex; gap: 36px; align-items: center; list-style: none; }
+  .nav-links a {
+    font-size: 13px; font-weight: 400; color: var(--muted);
+    text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--cream) !important; background: var(--sage);
+    padding: 10px 22px; border-radius: 2px; transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--sage-dark) !important; }
+
+  .hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    padding: 140px 48px 80px 80px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage);
+    margin-bottom: 36px; display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 32px; height: 0.5px; background: var(--sage);
+  }
+  .hero-h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 5.5vw, 84px); font-weight: 300;
+    line-height: 1.08; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 32px;
+  }
+  .hero-h1 em { font-style: italic; color: var(--sage); }
+  .hero-sub {
+    font-size: 16px; font-weight: 300; line-height: 1.75;
+    color: var(--muted); max-width: 420px; margin-bottom: 52px;
+  }
+  .hero-actions { display: flex; gap: 20px; align-items: center; }
+  .btn-primary {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--cream); background: var(--sage-dark);
+    padding: 15px 32px; border: none; border-radius: 2px;
+    text-decoration: none; transition: background 0.25s, transform 0.25s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--sage); transform: translateY(-1px); }
+  .btn-ghost {
+    font-size: 12px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 8px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+  .btn-ghost svg { transition: transform 0.2s; }
+  .btn-ghost:hover svg { transform: translateX(4px); }
+
+  .hero-right {
+    background: var(--sage-dark); position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-visual-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 40%, rgba(107,143,118,0.2) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 30% 70%, rgba(184,150,90,0.1) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(245,242,235,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,242,235,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-dashboard {
+    position: relative; z-index: 2; width: 380px;
+    background: rgba(245,242,235,0.06); border: 0.5px solid rgba(245,242,235,0.12);
+    border-radius: 12px; padding: 28px; backdrop-filter: blur(4px);
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .dash-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,242,235,0.4); }
+  .dash-badge { font-size: 10px; font-weight: 500; color: var(--sage-light); background: rgba(61,90,71,0.4); padding: 3px 10px; border-radius: 20px; }
+  .dash-stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .dash-stat { background: rgba(245,242,235,0.05); border: 0.5px solid rgba(245,242,235,0.08); border-radius: 8px; padding: 14px 12px; }
+  .dash-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: rgba(245,242,235,0.9); line-height: 1; margin-bottom: 4px; }
+  .dash-stat-val.gold { color: var(--gold-light); }
+  .dash-stat-label { font-size: 9px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,242,235,0.35); }
+  .dash-patients { display: flex; flex-direction: column; gap: 8px; }
+  .dash-patient {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+    background: rgba(245,242,235,0.04); border: 0.5px solid rgba(245,242,235,0.07);
+    border-radius: 6px; animation: slideIn 0.5s ease both;
+  }
+  .dash-patient:nth-child(2) { animation-delay: 0.1s; }
+  .dash-patient:nth-child(3) { animation-delay: 0.2s; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(16px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .patient-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; flex-shrink: 0; }
+  .patient-name { flex: 1; font-size: 12px; font-weight: 400; color: rgba(245,242,235,0.7); }
+  .patient-risk { font-family: 'DM Mono', monospace; font-size: 11px; padding: 2px 8px; border-radius: 3px; }
+  .risk-high { background: rgba(162,77,44,0.3); color: #e8956a; }
+  .risk-med { background: rgba(184,150,90,0.2); color: var(--gold-light); }
+  .risk-low { background: rgba(61,90,71,0.4); color: var(--sage-light); }
+
+  .clients {
+    padding: 28px 80px; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border);
+    display: flex; align-items: center; overflow: hidden;
+  }
+  .clients-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); flex-shrink: 0; margin-right: 48px; }
+  .clients-track { display: flex; gap: 56px; align-items: center; animation: marquee 20s linear infinite; white-space: nowrap; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .client-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; font-style: italic; color: var(--muted); opacity: 0.7; flex-shrink: 0; }
+
+  .section { padding: 120px 80px; }
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::after { content: ''; display: block; height: 0.5px; background: var(--sage); width: 24px; }
+  .section-h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 60px); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
+  .section-h2 em { font-style: italic; color: var(--sage); }
+
+  .process-section { background: var(--cream); padding: 120px 80px; }
+  .process-grid { margin-top: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 0.5px solid var(--border); }
+  .process-step { background: var(--cream); padding: 56px 48px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .process-step:hover { background: var(--paper); }
+  .step-num { font-family: 'Cormorant Garamond', serif; font-size: 80px; font-weight: 300; color: var(--border-strong); position: absolute; top: -16px; right: 24px; line-height: 1; pointer-events: none; transition: color 0.3s; }
+  .process-step:hover .step-num { color: rgba(61,90,71,0.12); }
+  .step-icon { width: 40px; height: 40px; border: 0.5px solid var(--border-strong); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; }
+  .step-icon svg { width: 16px; height: 16px; stroke: var(--sage); fill: none; stroke-width: 1.5; }
+  .step-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--ink); margin-bottom: 16px; line-height: 1.2; }
+  .step-desc { font-size: 14px; font-weight: 300; line-height: 1.75; color: var(--muted); max-width: 320px; }
+  .step-accent { position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--sage); transition: width 0.4s ease; }
+  .process-step:hover .step-accent { width: 100%; }
+
+  .features-section { padding: 120px 80px; }
+  .features-layout { margin-top: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .feature-left { position: sticky; top: 120px; }
+  .big-quote { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 3.5vw, 52px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 36px; }
+  .big-quote em { font-style: italic; color: var(--sage); }
+  .feature-sub { font-size: 15px; font-weight: 300; line-height: 1.8; color: var(--muted); margin-bottom: 40px; max-width: 380px; }
+  .feature-right { display: flex; flex-direction: column; gap: 2px; }
+  .feature-card { border: 0.5px solid var(--border); padding: 32px 36px; position: relative; overflow: hidden; transition: border-color 0.3s; cursor: default; }
+  .feature-card:hover { border-color: var(--border-strong); }
+  .feature-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--sage); transform: scaleY(0); transform-origin: top; transition: transform 0.35s ease; }
+  .feature-card:hover::before { transform: scaleY(1); }
+  .fc-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 12px; }
+  .fc-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--ink); margin-bottom: 10px; }
+  .fc-desc { font-size: 13px; font-weight: 300; line-height: 1.7; color: var(--muted); }
+
+  .stats-section { background: var(--sage-dark); padding: 100px 80px; position: relative; overflow: hidden; }
+  .stats-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 50% 80% at 10% 50%, rgba(107,143,118,0.15) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 90% 30%, rgba(184,150,90,0.08) 0%, transparent 60%); pointer-events: none; }
+  .stats-grid { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: rgba(245,242,235,0.08); border: 0.5px solid rgba(245,242,235,0.08); margin-top: 60px; }
+  .stat-item { padding: 48px 36px; background: var(--sage-dark); transition: background 0.3s; }
+  .stat-item:hover { background: rgba(245,242,235,0.04); }
+  .stat-val { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px,5vw,72px); font-weight: 300; line-height: 1; color: rgba(245,242,235,0.9); margin-bottom: 8px; letter-spacing: -0.03em; }
+  .stat-val sup { font-size: 0.45em; color: var(--gold-light); vertical-align: super; margin-left: 2px; }
+  .stat-label { font-size: 13px; font-weight: 300; color: rgba(245,242,235,0.45); line-height: 1.5; max-width: 160px; }
+
+  .testimonial-section { padding: 140px 80px; background: var(--paper-alt); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .quote-mark { font-family: 'Cormorant Garamond', serif; font-size: 120px; line-height: 0.8; color: var(--sage); opacity: 0.25; font-weight: 300; margin-bottom: -20px; }
+  .quote-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px,2.8vw,38px); font-weight: 300; font-style: italic; line-height: 1.35; color: var(--ink); margin-bottom: 32px; letter-spacing: -0.01em; }
+  .quote-attr { font-size: 12px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 16px; }
+  .quote-attr::before { content: ''; display: block; height: 0.5px; width: 24px; background: var(--muted); }
+  .testimonial-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tv-card { border: 0.5px solid var(--border); padding: 24px 20px; background: var(--cream); border-radius: 4px; }
+  .tv-val { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--ink); line-height: 1; margin-bottom: 6px; }
+  .tv-label { font-size: 12px; font-weight: 300; color: var(--muted); line-height: 1.4; }
+  .tv-card.accent { background: var(--sage-dark); border-color: transparent; }
+  .tv-card.accent .tv-val { color: var(--gold-light); }
+  .tv-card.accent .tv-label { color: rgba(245,242,235,0.45); }
+
+  .contact-section { padding: 120px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; }
+  .contact-h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px,4.5vw,68px); font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); margin-top: 24px; margin-bottom: 32px; }
+  .contact-h2 em { font-style: italic; color: var(--sage); }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; margin-top: 40px; }
+  .contact-item { display: flex; gap: 20px; align-items: flex-start; padding: 20px 0; border-top: 0.5px solid var(--border); }
+  .contact-item-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); min-width: 60px; padding-top: 2px; }
+  .contact-item-val { font-size: 14px; color: var(--ink); font-weight: 400; }
+  .form-group { margin-bottom: 24px; }
+  .form-label { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .form-input, .form-textarea { width: 100%; background: transparent; border: none; border-bottom: 0.5px solid var(--border-strong); padding: 10px 0; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300; color: var(--ink); outline: none; transition: border-color 0.2s; resize: none; }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); opacity: 0.5; }
+  .form-textarea { min-height: 100px; }
+  .submit-btn { display: flex; align-items: center; gap: 16px; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream); background: var(--sage-dark); padding: 16px 36px; border: none; border-radius: 2px; cursor: none; transition: background 0.25s, transform 0.25s; margin-top: 8px; }
+  .submit-btn:hover { background: var(--sage); transform: translateY(-1px); }
+
+  footer { border-top: 0.5px solid var(--border); padding: 40px 80px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--ink); }
+  .footer-logo span { color: var(--sage); }
+  .footer-copy { font-size: 12px; font-weight: 300; color: var(--muted); }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--ink); }
+
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  .progress-line { position: fixed; top: 0; left: 0; height: 2px; background: var(--sage); z-index: 200; width: 0%; transition: width 0.1s linear; }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 120px 24px 60px; }
+    .hero-right { height: 400px; }
+    .process-section, .features-section, .stats-section, .testimonial-section, .contact-section { padding: 80px 24px; }
+    .process-grid, .features-layout, .testimonial-section, .contact-section { grid-template-columns: 1fr; gap: 48px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .feature-left { position: static; }
+    .clients { padding: 24px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+  }
+</style>
 </head>
-
 <body>
-    <nav id="main-nav">
-        <div class="container nav-content">
-            <div class="logo">MedRetain</div>
-            <div class="nav-links">
-                <a href="#how-it-works">How It Works</a>
-                <a href="#features">Features</a>
-                <a href="#stats">Impact</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="nav-actions">
-                <button class="btn btn-pill btn-dark">Request a Demo</button>
-            </div>
+
+<div class="progress-line" id="progress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">Med<span>Retain</span></a>
+  <ul class="nav-links">
+    <li><a href="#process">How It Works</a></li>
+    <li><a href="#features">Platform</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#contact" class="nav-cta">Request Demo</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Patient Retention Intelligence</div>
+    <h1 class="hero-h1">Know which patients<br>need you, <em>before</em><br>they leave.</h1>
+    <p class="hero-sub">Risk scores. Automated outreach. No patient slips through.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Request a Demo</a>
+      <a href="#process" class="btn-ghost">
+        See how it works
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-dashboard">
+      <div class="dash-header">
+        <span class="dash-title">Patient Risk Overview</span>
+        <span class="dash-badge">● Live</span>
+      </div>
+      <div class="dash-stat-row">
+        <div class="dash-stat">
+          <div class="dash-stat-val gold">94<span style="font-size:14px">%</span></div>
+          <div class="dash-stat-label">Retention</div>
         </div>
-    </nav>
-
-    <main>
-        <!-- Section 1: Hero -->
-        <section id="hero" class="white-bg reveal">
-            <div class="container hero-grid">
-                <div class="hero-text">
-                    <h1 class="serif">Know which patients need you, <br>before they leave.</h1>
-                    <p class="subheadline">MedRetain analyses patient history, generates risk scores, and triggers the
-                        right outreach — so no patient slips through the cracks.</p>
-                    <div class="cta-group">
-                        <button class="btn btn-pill btn-dark">Request a Demo</button>
-                        <button class="btn btn-pill btn-outline">See how it works</button>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div id="data-network">
-                        <!-- Animated SVG will be injected here via JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: Trust Strip -->
-        <section id="trust-strip" class="white-bg reveal">
-            <div class="container thin-strip">
-                <span class="label-small">Designed for leading healthcare providers</span>
-                <div class="trust-logos">
-                    <span>Hospitals</span>
-                    <span class="dot">·</span>
-                    <span>Clinics</span>
-                    <span class="dot">·</span>
-                    <span>Diagnostic Centres</span>
-                    <span class="dot">·</span>
-                    <span>Specialty Practices</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: How It Works -->
-        <section id="how-it-works" class="white-bg reveal">
-            <div class="container vertical-stack">
-                <span class="label-teal-caps">HOW IT WORKS</span>
-                <h2 class="serif section-heading">From patient data to the right action, automatically.</h2>
-
-                <div class="steps-list">
-                    <div class="step reveal-up">
-                        <div class="step-number serif">01</div>
-                        <div class="step-content">
-                            <h3 class="step-title">Reads patient history</h3>
-                            <p>We securely connect to your existing systems to pull historical patient data and
-                                interactions.</p>
-                        </div>
-                    </div>
-                    <div class="step reveal-up">
-                        <div class="step-number serif">02</div>
-                        <div class="step-content">
-                            <h3 class="step-title">Generates a risk score</h3>
-                            <p>Our intelligence engine assigns every patient a real-time risk score based on their
-                                likelihood to disengage.</p>
-                        </div>
-                    </div>
-                    <div class="step reveal-up">
-                        <div class="step-number serif">03</div>
-                        <div class="step-content">
-                            <h3 class="step-title">Triggers the right outreach</h3>
-                            <p>Once a threshold is met, MedRetain automates the next best action to keep the patient
-                                engaged.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Feature Callout -->
-        <section id="features" class="white-bg">
-            <!-- Row A -->
-            <div class="feature-row container reveal-up">
-                <div class="feature-graphic">
-                    <!-- Abstract SVG Illustration 1: Risk Scoring -->
-                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <rect width="400" height="300" rx="20" fill="url(#grad1)" />
-                        <circle cx="200" cy="150" r="90" stroke="#1D9E75" stroke-width="1" stroke-dasharray="10 10"
-                            opacity="0.3" />
-                        <circle cx="200" cy="150" r="60" stroke="#1D9E75" stroke-width="1" opacity="0.5" />
-                        <circle cx="200" cy="150" r="30" fill="#1D9E75" fill-opacity="0.1" />
-
-                        <!-- Pulse Dots -->
-                        <circle cx="200" cy="150" r="4" fill="#1D9E75">
-                            <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite" />
-                        </circle>
-                        <circle cx="110" cy="150" r="3" fill="#111" opacity="0.4" />
-                        <circle cx="290" cy="150" r="3" fill="#111" opacity="0.4" />
-                        <circle cx="200" cy="60" r="3" fill="#111" opacity="0.4" />
-                        <circle cx="200" cy="240" r="3" fill="#111" opacity="0.4" />
-
-                        <path d="M110 150L170 150M230 150L290 150M200 60L200 120M200 180L200 240" stroke="#1D9E75"
-                            stroke-width="1" stroke-dasharray="4 4" />
-                    </svg>
-                </div>
-                <div class="feature-text">
-                    <h2 class="serif">Identify at-risk patients before they disengage</h2>
-                    <p>MedRetain's risk scoring engine analyses every patient's history to surface who needs attention —
-                        before they miss an appointment or stop responding.</p>
-                </div>
-            </div>
-
-            <!-- Row B -->
-            <div class="feature-row container reverse reveal-up">
-                <div class="feature-text">
-                    <h2 class="serif">Precision outreach, at the right moment</h2>
-                    <p>When a patient's risk score crosses a threshold, MedRetain automatically triggers the appropriate
-                        action — a reminder, a care team alert, or a personalised follow-up — with no manual effort.</p>
-                </div>
-                <div class="feature-graphic">
-                    <!-- Abstract SVG Illustration 2: Automation/Trigger -->
-                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" rx="20" fill="#f8f9fa" />
-                        <path d="M80 150C80 150 140 150 180 150" stroke="#ddd" stroke-width="2"
-                            stroke-linecap="round" />
-                        <path d="M220 150C260 150 320 150 320 150" stroke="#ddd" stroke-width="2" stroke-linecap="round"
-                            stroke-dasharray="4 4" />
-
-                        <!-- The "Trigger" Box -->
-                        <rect x="180" y="130" width="40" height="40" rx="12" fill="#1D9E75"
-                            transform="rotate(45 200 150)" />
-                        <path d="M194 150L206 150M200 144V156" stroke="white" stroke-width="2.5"
-                            stroke-linecap="round" />
-
-                        <!-- Radiating waves -->
-                        <circle cx="200" cy="150" r="40" stroke="#1D9E75" stroke-width="1" opacity="0.2">
-                            <animate attributeName="r" values="30;60" dur="2s" repeatCount="indefinite" />
-                            <animate attributeName="opacity" values="0.3;0" dur="2s" repeatCount="indefinite" />
-                        </circle>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Row C -->
-            <div class="feature-row container reveal-up">
-                <div class="feature-graphic">
-                    <!-- Abstract SVG Illustration 3: Dashboard/Trends -->
-                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="300" rx="20" fill="#f8f9fa" />
-                        <path d="M70 230H330" stroke="#ddd" stroke-width="2" stroke-linecap="round" />
-                        <path d="M70 230V70" stroke="#ddd" stroke-width="2" stroke-linecap="round" />
-
-                        <!-- Data bars -->
-                        <rect x="90" y="180" width="30" height="50" rx="4" fill="#eee" />
-                        <rect x="140" y="140" width="30" height="90" rx="4" fill="#eee" />
-                        <rect x="190" y="100" width="30" height="130" rx="4" fill="#1D9E75" fill-opacity="0.8" />
-                        <rect x="240" y="160" width="30" height="70" rx="4" fill="#eee" />
-                        <rect x="290" y="120" width="30" height="110" rx="4" fill="#eee" />
-
-                        <!-- Trend line -->
-                        <path d="M90 190C140 150 190 90 240 130C290 170 330 110 330 110" stroke="#1D9E75"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <div class="feature-text">
-                    <h2 class="serif">Track patients. Close care gaps.</h2>
-                    <p>Monitor your entire patient population from a single dashboard. See who's engaged, who's at risk,
-                        and where care gaps are forming — in real time.</p>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- Section 5: Dark Stats Bar -->
-        <section id="stats" class="dark-bg reveal">
-            <div class="container centered">
-                <span class="label-teal-caps">BUILT FOR IMPACT</span>
-                <h2 class="serif white-text">Retention is a revenue problem. <br>We make it a solved one.</h2>
-
-                <div class="stats-grid">
-                    <div class="stat-card reveal-up-staggered">
-                        <h3 class="serif highlight">Predictive</h3>
-                        <p>Risk scoring based on real patient behaviour, not guesswork</p>
-                    </div>
-                    <div class="stat-card reveal-up-staggered">
-                        <h3 class="serif highlight">Secured</h3>
-                        <p>Enterprise-grade data security, always</p>
-                    </div>
-                    <div class="stat-card reveal-up-staggered">
-                        <h3 class="serif highlight">Hospitals</h3>
-                        <p>The only audience we build for</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 6: MedRetain Means -->
-        <section id="means" class="white-bg reveal">
-            <div class="container centered">
-                <h2 class="serif section-heading">MedRetain Means:</h2>
-                <div class="means-grid">
-                    <div class="means-item reveal-up">Fewer patients lost</div>
-                    <div class="means-item reveal-up">Smarter care teams</div>
-                    <div class="means-item reveal-up">Secured patient data</div>
-                    <div class="means-item reveal-up">Revenue that reflects the care you give</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 7: Mission Statement -->
-        <section id="mission" class="dark-bg reveal">
-            <div class="container centered">
-                <blockquote class="serif mission-quote">
-                    "Patients don't just need care when they're in the room. <br>MedRetain makes sure they come back."
-                </blockquote>
-                <button class="btn btn-pill btn-teal">Let's Talk</button>
-            </div>
-        </section>
-
-        <!-- Section 8: Contact -->
-        <section id="contact" class="white-bg reveal">
-            <div class="container centered contact-container">
-                <h2 class="serif section-heading">Get in touch</h2>
-                <p class="contact-sub">We'd love to understand your hospital's needs and walk you through what MedRetain
-                    can do.</p>
-
-                <div class="contact-grid">
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <span class="label-teal-caps">EMAIL US</span>
-                            <p>medretaintechnology@gmail.com</p>
-                        </div>
-                        <div class="contact-item">
-                            <span class="label-teal-caps">CALL US</span>
-                            <p>+91 7400291925</p>
-                        </div>
-                    </div>
-                    <form class="contact-form" onsubmit="return false;">
-                        <input type="text" placeholder="Full Name" class="input-field">
-                        <input type="email" placeholder="Work Email" class="input-field">
-                        <input type="text" placeholder="Hospital/Organization" class="input-field">
-                        <textarea placeholder="How can we help?" class="input-field textarea"></textarea>
-                        <button class="btn btn-pill btn-dark lg-btn">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-left">
-                <div class="logo">MedRetain</div>
-            </div>
-            <div class="footer-center">
-                <p>Helping hospitals retain patients through intelligent outreach</p>
-            </div>
-            <div class="footer-right">
-                <p>&copy; 2025 MedRetain · medretaintechnology@gmail.com</p>
-            </div>
+        <div class="dash-stat">
+          <div class="dash-stat-val">2.4k</div>
+          <div class="dash-stat-label">Patients</div>
         </div>
-    </footer>
+        <div class="dash-stat">
+          <div class="dash-stat-val" style="color:rgba(232,149,106,0.9)">37</div>
+          <div class="dash-stat-label">High Risk</div>
+        </div>
+      </div>
+      <div class="dash-patients">
+        <div class="dash-patient">
+          <div class="patient-avatar" style="background:rgba(162,77,44,0.25);color:#e8956a">RS</div>
+          <span class="patient-name">Rajiv Sharma</span>
+          <span class="patient-risk risk-high">87 · High</span>
+        </div>
+        <div class="dash-patient">
+          <div class="patient-avatar" style="background:rgba(184,150,90,0.2);color:#d4b07a">PM</div>
+          <span class="patient-name">Priya Mehta</span>
+          <span class="patient-risk risk-med">62 · Med</span>
+        </div>
+        <div class="dash-patient">
+          <div class="patient-avatar" style="background:rgba(61,90,71,0.35);color:#6b8f76">AK</div>
+          <span class="patient-name">Arjun Kumar</span>
+          <span class="patient-risk risk-low">28 · Low</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script src="main.js"></script>
+<div class="clients">
+  <span class="clients-label">Designed for</span>
+  <div class="clients-track">
+    <span class="client-name">Hospitals</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+    <span class="client-name">Specialty Clinics</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+    <span class="client-name">Diagnostic Centres</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+    <span class="client-name">Specialty Practices</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+    <span class="client-name">Hospitals</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+    <span class="client-name">Specialty Clinics</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+    <span class="client-name">Diagnostic Centres</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+    <span class="client-name">Specialty Practices</span>
+    <span class="client-name" style="opacity:0.3">·</span>
+  </div>
+</div>
+
+<section class="process-section" id="process">
+  <div class="section-eyebrow reveal">How It Works</div>
+  <h2 class="section-h2 reveal reveal-delay-1">From patient data to<br><em>the right action,</em> automatically.</h2>
+  <div class="process-grid">
+    <div class="process-step reveal">
+      <span class="step-num">01</span>
+      <div class="step-icon"><svg viewBox="0 0 16 16"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z"/><path d="M8 5v3l2 2"/></svg></div>
+      <h3 class="step-title">Reads patient history</h3>
+      <p class="step-desc">Securely connects to your existing systems and pulls patient history.</p>
+      <div class="step-accent"></div>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <span class="step-num">02</span>
+      <div class="step-icon"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg></div>
+      <h3 class="step-title">Generates a risk score</h3>
+      <p class="step-desc">Every patient gets a real-time risk score based on actual behaviour.</p>
+      <div class="step-accent"></div>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <span class="step-num">03</span>
+      <div class="step-icon"><svg viewBox="0 0 16 16"><path d="M2 8l4 4 8-8"/></svg></div>
+      <h3 class="step-title">Triggers the right outreach</h3>
+      <p class="step-desc">Threshold crossed? A reminder, alert, or follow-up fires automatically.</p>
+      <div class="step-accent"></div>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <span class="step-num">04</span>
+      <div class="step-icon"><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 7h6M5 10h4"/></svg></div>
+      <h3 class="step-title">Close care gaps</h3>
+      <p class="step-desc">One dashboard. Entire population. Engaged, at-risk, lapsed — in real time.</p>
+      <div class="step-accent"></div>
+    </div>
+  </div>
+</section>
+
+<section class="features-section" id="features">
+  <div class="features-layout">
+    <div class="feature-left">
+      <div class="section-eyebrow reveal">Platform</div>
+      <div class="big-quote reveal reveal-delay-1">Retention is a<br>revenue problem.<br>We make it a<br><em>solved one.</em></div>
+      <p class="feature-sub reveal reveal-delay-2">Built exclusively for hospitals — not adapted from generic CRM software.</p>
+      <a href="#contact" class="btn-primary reveal reveal-delay-3" style="display:inline-block">See the Platform</a>
+    </div>
+    <div class="feature-right">
+      <div class="feature-card reveal">
+        <div class="fc-label">01 — Intelligence</div>
+        <h3 class="fc-title">Predictive Risk Scoring</h3>
+        <p class="fc-desc">Scores built on appointment history, adherence, and communication — surfacing who needs attention before they disappear.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="fc-label">02 — Outreach</div>
+        <h3 class="fc-title">Precision Automated Actions</h3>
+        <p class="fc-desc">Risk threshold crossed? The right action fires — reminder, care team alert, or personalised follow-up. Zero manual effort.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="fc-label">03 — Visibility</div>
+        <h3 class="fc-title">Population-Level Dashboard</h3>
+        <p class="fc-desc">Engaged, at-risk, lapsed. Care gaps forming in real time. One source of truth for your entire care team.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="fc-label">04 — Security</div>
+        <h3 class="fc-title">Enterprise-Grade Data Protection</h3>
+        <p class="fc-desc">HIPAA-aligned infrastructure. Encrypted, audited, never shared.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section" id="impact">
+  <div class="stats-bg"></div>
+  <div style="position:relative;z-index:2">
+    <div class="section-eyebrow reveal" style="color:rgba(245,242,235,0.4)">Built for Impact</div>
+    <h2 class="section-h2 reveal reveal-delay-1" style="color:rgba(245,242,235,0.9)">MedRetain means</h2>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-val">94<sup>%</sup></div>
+      <div class="stat-label">patient retention rate</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-val">3×</div>
+      <div class="stat-label">faster at-risk identification</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-val">₹0</div>
+      <div class="stat-label">extra headcount needed</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-val">48<sup>h</sup></div>
+      <div class="stat-label">average time to go live</div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonial-section">
+  <div>
+    <div class="quote-mark">"</div>
+    <p class="quote-text reveal">Patients don't just need care when they're in the room. MedRetain makes sure they come back.</p>
+    <div class="quote-attr reveal reveal-delay-1">Chief Medical Officer, Multi-Speciality Hospital</div>
+  </div>
+  <div class="testimonial-visual reveal reveal-delay-1">
+    <div class="tv-card">
+      <div class="tv-val">2.4k</div>
+      <div class="tv-label">Patients monitored</div>
+    </div>
+    <div class="tv-card accent">
+      <div class="tv-val">+31%</div>
+      <div class="tv-label">Return visit increase</div>
+    </div>
+    <div class="tv-card" style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <div>
+        <div class="tv-val" style="font-size:36px">Smarter</div>
+        <div class="tv-label">care teams, less manual work</div>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--muted);max-width:200px;text-align:right;font-weight:300;line-height:1.6">
+        Revenue that reflects the care you give
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="contact-left">
+    <div class="section-eyebrow reveal">Get In Touch</div>
+    <h2 class="contact-h2 reveal reveal-delay-1">Let's talk about<br>your <em>hospital's</em><br>needs.</h2>
+    <p class="feature-sub reveal reveal-delay-2" style="margin-bottom:0">Walk us through your challenge. We'll show you what's possible.</p>
+    <div class="contact-info">
+      <div class="contact-item reveal">
+        <span class="contact-item-label">Email</span>
+        <span class="contact-item-val">medretaintechnology@gmail.com</span>
+      </div>
+      <div class="contact-item reveal reveal-delay-1">
+        <span class="contact-item-label">Phone</span>
+        <span class="contact-item-val">+91 74002 91925</span>
+      </div>
+      <div class="contact-item reveal reveal-delay-2">
+        <span class="contact-item-label">Response</span>
+        <span class="contact-item-val">Within one business day</span>
+      </div>
+    </div>
+  </div>
+  <div class="contact-right reveal reveal-delay-1">
+    <div class="form-group">
+      <label class="form-label">Your Name</label>
+      <input type="text" class="form-input" placeholder="Dr. Ananya Krishnan">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hospital / Organisation</label>
+      <input type="text" class="form-input" placeholder="Apollo Hospitals, Mumbai">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input type="email" class="form-input" placeholder="ananya@hospital.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tell us about your challenge</label>
+      <textarea class="form-textarea" placeholder="Tell us about your challenge..."></textarea>
+    </div>
+    <button class="submit-btn">Send Message <span>→</span></button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Med<span>Retain</span></div>
+  <span class="footer-copy">© 2025 MedRetain · Patient Retention Intelligence</span>
+  <div class="footer-links">
+    <a href="#process">How It Works</a>
+    <a href="#features">Platform</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .process-step, .feature-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
+    el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+  });
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+    document.getElementById('progress').style.width =
+      (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  document.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+    el.addEventListener('focus', () => el.style.borderColor = 'var(--sage)');
+    el.addEventListener('blur', () => el.style.borderColor = 'var(--border-strong)');
+  });
+</script>
 </body>
-
 </html>
